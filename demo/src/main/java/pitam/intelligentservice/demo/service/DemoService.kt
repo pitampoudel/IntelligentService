@@ -15,10 +15,7 @@ import pitam.intelligentservice.demo.R
 import pitam.intelligentservice.utils.NotificationUtils.buildNotification
 
 @AndroidEntryPoint
-class DemoService(
-    override val notificationId: Int = 1,
-    override var isWorking: Boolean = true
-) : IntelligentService() {
+class DemoService : IntelligentService(notificationId = 1) {
 
     inner class LocalBinder : Binder() {
         fun getService() = this@DemoService
@@ -36,7 +33,7 @@ class DemoService(
 
 
         //TODO whatever you want to do
-        //TODO set isWorking = false when work is completed
+        //TODO  setWorking(false) when work is completed
         return super.onStartCommand(intent, flags, startId)
     }
 

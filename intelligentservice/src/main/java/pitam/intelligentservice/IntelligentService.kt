@@ -7,7 +7,7 @@ import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import timber.log.Timber
 
-abstract class IntelligentService : LifecycleService() {
+abstract class IntelligentService(val notificationId: Int) : LifecycleService() {
     private var bindCount = 0
 
     private fun handleBind() {
@@ -44,8 +44,11 @@ abstract class IntelligentService : LifecycleService() {
     }
 
 
-    abstract var isWorking: Boolean
-    abstract val notificationId: Int
+    private var isWorking: Boolean = true
+    fun setWorking(value: Boolean) {
+        isWorking = value
+    }
+
     abstract fun buildNotification(): Notification
     private fun manageLifetime() {
         when {
