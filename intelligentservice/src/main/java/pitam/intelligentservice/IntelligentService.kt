@@ -44,9 +44,9 @@ abstract class IntelligentService(val notificationId: Int) : LifecycleService() 
     }
 
 
-    private var keepWorkingWithNotification: Boolean = true
-    fun setKeepWorkingWithNotification(value: Boolean) {
-        keepWorkingWithNotification = value
+    private var keepRunningWithNotification: Boolean = true
+    fun setKeepRunningWithNotification(value: Boolean) {
+        keepRunningWithNotification = value
     }
 
     abstract fun buildNotification(): Notification
@@ -62,7 +62,7 @@ abstract class IntelligentService(val notificationId: Int) : LifecycleService() 
 
             }
 
-            keepWorkingWithNotification -> {
+            keepRunningWithNotification -> {
                 Timber.d("start notification and continue service")
                 startForeground(notificationId, buildNotification())
             }

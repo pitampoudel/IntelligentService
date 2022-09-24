@@ -33,7 +33,7 @@ class DemoService : IntelligentService(notificationId = 1) {
 
 
         //TODO whatever you want to do
-        //TODO  setWorking(false) when work is completed
+        //TODO  setKeepRunningWithNotification(false) when work is completed
         return super.onStartCommand(intent, flags, startId)
     }
 
