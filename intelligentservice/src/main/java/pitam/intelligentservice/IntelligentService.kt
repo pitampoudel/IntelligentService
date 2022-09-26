@@ -7,7 +7,7 @@ import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import timber.log.Timber
 
-abstract class IntelligentService(val notificationId: Int) : LifecycleService() {
+abstract class IntelligentService<T>(val notificationId: Int) : LifecycleService() {
     private var bindCount = 0
 
     private fun handleBind() {
@@ -49,10 +49,20 @@ abstract class IntelligentService(val notificationId: Int) : LifecycleService() 
         keepRunningWithNotification = value
     }
 
-    abstract fun buildNotification(): Notification
+    fun updateNotificationIfShowing(data:T) {
+        if (isForeground) {
+            Timber.d("update notification and continue service")
+            startForeground(notificationId, buildNotification(data))
+        }
+
+    }
+
+    abstract fun  buildNotification(data:T?): Notification
+    private var isForeground = false
     private fun manageLifetime() {
         when {
             bindCount > 0 -> {
+                isForeground = false
                 Timber.d("stop notification and continue service")
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     stopForeground(STOP_FOREGROUND_REMOVE)
@@ -63,8 +73,9 @@ abstract class IntelligentService(val notificationId: Int) : LifecycleService() 
             }
 
             keepRunningWithNotification -> {
+                isForeground = true
                 Timber.d("start notification and continue service")
-                startForeground(notificationId, buildNotification())
+                startForeground(notificationId, buildNotification(null))
             }
 
             else -> {

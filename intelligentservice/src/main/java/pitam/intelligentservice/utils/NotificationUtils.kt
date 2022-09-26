@@ -11,7 +11,7 @@ import pitam.intelligentservice.IntelligentService
 
 object NotificationUtils {
 
-    fun IntelligentService.buildNotification(
+    fun <T> IntelligentService<T>.buildCustomNotification(
         channelId: String,
         channelName: String,
         channelImportance: Int?,

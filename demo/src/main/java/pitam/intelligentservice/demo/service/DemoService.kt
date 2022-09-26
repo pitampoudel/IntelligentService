@@ -12,10 +12,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import pitam.intelligentservice.IntelligentService
 import pitam.intelligentservice.demo.MainActivity
 import pitam.intelligentservice.demo.R
-import pitam.intelligentservice.utils.NotificationUtils.buildNotification
+import pitam.intelligentservice.utils.NotificationUtils.buildCustomNotification
 
 @AndroidEntryPoint
-class DemoService : IntelligentService(notificationId = 1) {
+class DemoService : IntelligentService<String>(notificationId = 1) {
 
     inner class LocalBinder : Binder() {
         fun getService() = this@DemoService
@@ -31,21 +31,21 @@ class DemoService : IntelligentService(notificationId = 1) {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-
+        updateNotificationIfShowing("It can take a while")
         //TODO whatever you want to do
         //TODO  setKeepRunningWithNotification(false) when work is completed
         return super.onStartCommand(intent, flags, startId)
     }
 
 
-    override fun buildNotification(): Notification {
-        return buildNotification(
+    override fun buildNotification(data: String?): Notification {
+        return buildCustomNotification(
             channelId = "CHANNEL_ID_DEMO",
             channelName = "Demo Channel",
             channelImportance = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) NotificationManager.IMPORTANCE_LOW else null,
             notificationIcon = R.drawable.ic_launcher_foreground,
             notificationTitle = "Service is running",
-            notificationText = "It can take a while"
+            notificationText = data?:"Please wait"
         ) {
 
             // Tapping the notification opens MainActivity
